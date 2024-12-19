@@ -1,3 +1,8 @@
 /src/results
 /src/logs
 /Data
+src/codebert/fine_tuned_codebert_final/
+src/codebert/fine_tuned_codebert_unique/
+src/codebert/results_repetition/
+src/codebert/results_unique/
+      
