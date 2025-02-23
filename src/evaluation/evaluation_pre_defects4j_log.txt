@@ -1,0 +1,114 @@
+2025-02-23 14:38:06,329 - INFO - Starting evaluation of pre-defects4j models...
+2025-02-23 14:38:06,534 - INFO - Evaluating model_unique...
+2025-02-23 14:44:06,545 - INFO - Starting evaluation of pre-defects4j models...
+2025-02-23 14:44:06,752 - INFO - Evaluating model_unique...
+2025-02-23 14:52:49,141 - INFO - model_unique on UNIQUE Test Set Results:
+2025-02-23 14:52:49,141 - INFO - Accuracy: 1.0000
+2025-02-23 14:52:49,141 - INFO - Precision: 1.0000
+2025-02-23 14:52:49,141 - INFO - Recall: 1.0000
+2025-02-23 14:52:49,142 - INFO - F1 Score: 1.0000
+2025-02-23 14:52:49,142 - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+   Not Buggy     1.0000    1.0000    1.0000      2379
+       Buggy     1.0000    1.0000    1.0000      2379
+
+    accuracy                         1.0000      4758
+   macro avg     1.0000    1.0000    1.0000      4758
+weighted avg     1.0000    1.0000    1.0000      4758
+
+2025-02-23 14:52:49,142 - INFO - Confusion Matrix:
+[[2379    0]
+ [   0 2379]]
+2025-02-23 15:12:41,786 - INFO - model_unique on REPETITION Test Set Results:
+2025-02-23 15:12:41,786 - INFO - Accuracy: 1.0000
+2025-02-23 15:12:41,786 - INFO - Precision: 1.0000
+2025-02-23 15:12:41,786 - INFO - Recall: 1.0000
+2025-02-23 15:12:41,786 - INFO - F1 Score: 1.0000
+2025-02-23 15:12:41,786 - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+   Not Buggy     1.0000    1.0000    1.0000      5697
+       Buggy     1.0000    1.0000    1.0000      5697
+
+    accuracy                         1.0000     11394
+   macro avg     1.0000    1.0000    1.0000     11394
+weighted avg     1.0000    1.0000    1.0000     11394
+
+2025-02-23 15:12:41,787 - INFO - Confusion Matrix:
+[[5697    0]
+ [   0 5697]]
+2025-02-23 15:12:41,965 - INFO - model_unique on DEFECTS4J Test Set Results:
+2025-02-23 15:12:41,965 - INFO - Accuracy: 1.0000
+2025-02-23 15:12:41,965 - INFO - Precision: 1.0000
+2025-02-23 15:12:41,965 - INFO - Recall: 1.0000
+2025-02-23 15:12:41,965 - INFO - F1 Score: 1.0000
+2025-02-23 15:12:41,965 - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+   Not Buggy     0.0000    0.0000    0.0000         0
+       Buggy     1.0000    1.0000    1.0000        40
+
+   micro avg     1.0000    1.0000    1.0000        40
+   macro avg     0.5000    0.5000    0.5000        40
+weighted avg     1.0000    1.0000    1.0000        40
+
+2025-02-23 15:12:41,965 - INFO - Confusion Matrix:
+[[ 0  0]
+ [ 0 40]]
+2025-02-23 15:12:41,965 - INFO - Evaluating model_repetition...
+2025-02-23 15:21:22,320 - INFO - model_repetition on UNIQUE Test Set Results:
+2025-02-23 15:21:22,320 - INFO - Accuracy: 1.0000
+2025-02-23 15:21:22,320 - INFO - Precision: 1.0000
+2025-02-23 15:21:22,320 - INFO - Recall: 1.0000
+2025-02-23 15:21:22,320 - INFO - F1 Score: 1.0000
+2025-02-23 15:21:22,320 - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+   Not Buggy     1.0000    1.0000    1.0000      2379
+       Buggy     1.0000    1.0000    1.0000      2379
+
+    accuracy                         1.0000      4758
+   macro avg     1.0000    1.0000    1.0000      4758
+weighted avg     1.0000    1.0000    1.0000      4758
+
+2025-02-23 15:21:22,321 - INFO - Confusion Matrix:
+[[2379    0]
+ [   0 2379]]
+2025-02-23 15:41:02,080 - INFO - model_repetition on REPETITION Test Set Results:
+2025-02-23 15:41:02,080 - INFO - Accuracy: 1.0000
+2025-02-23 15:41:02,080 - INFO - Precision: 1.0000
+2025-02-23 15:41:02,080 - INFO - Recall: 1.0000
+2025-02-23 15:41:02,080 - INFO - F1 Score: 1.0000
+2025-02-23 15:41:02,080 - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+   Not Buggy     1.0000    1.0000    1.0000      5697
+       Buggy     1.0000    1.0000    1.0000      5697
+
+    accuracy                         1.0000     11394
+   macro avg     1.0000    1.0000    1.0000     11394
+weighted avg     1.0000    1.0000    1.0000     11394
+
+2025-02-23 15:41:02,080 - INFO - Confusion Matrix:
+[[5697    0]
+ [   0 5697]]
+2025-02-23 15:41:02,262 - INFO - model_repetition on DEFECTS4J Test Set Results:
+2025-02-23 15:41:02,262 - INFO - Accuracy: 1.0000
+2025-02-23 15:41:02,262 - INFO - Precision: 1.0000
+2025-02-23 15:41:02,262 - INFO - Recall: 1.0000
+2025-02-23 15:41:02,262 - INFO - F1 Score: 1.0000
+2025-02-23 15:41:02,262 - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+   Not Buggy     0.0000    0.0000    0.0000         0
+       Buggy     1.0000    1.0000    1.0000        40
+
+   micro avg     1.0000    1.0000    1.0000        40
+   macro avg     0.5000    0.5000    0.5000        40
+weighted avg     1.0000    1.0000    1.0000        40
+
+2025-02-23 15:41:02,262 - INFO - Confusion Matrix:
+[[ 0  0]
+ [ 0 40]]
+2025-02-23 15:41:02,262 - INFO - Evaluation of pre-defects4j models complete.
