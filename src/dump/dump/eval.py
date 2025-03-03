@@ -23,46 +23,37 @@ logging.basicConfig(
 )
 logging.info("Starting full evaluation script...")
 
-# ---------------------------
-# SET DEVICE CONFIGURATION
-# ---------------------------
+# Set CUDA device for utilising Nvidia A100 GPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# ---------------------------
-# LOAD MODEL & TOKENISER
-# ---------------------------
+# Load the final model
 model_dir = "../../fine_tuned_model/final_model"
 logging.info(f"Loading model from: {model_dir}")
 model = RobertaForSequenceClassification.from_pretrained(model_dir, num_labels=2)
 model.to(device)
 model.eval()
 
+# Load the tokeniser
 tokenizer = RobertaTokenizer.from_pretrained("microsoft/codebert-base")
 
-# ---------------------------
-# DEFINE TEST DATA PATHS
-# ---------------------------
+# Define paths for test sets
 unique_test_path = os.path.join("..", "..", "Data", "sstubs4j", "unique", "splits", "sstubsLarge-test.json")
 repetition_test_path = os.path.join("..", "..", "Data", "sstubs4j", "repetition", "splits", "sstubsLarge-test.json")
 defects4j_test_path = os.path.join("..", "..", "Data", "defects4j", "splits", "defects4j-test.json")
 
 test_sets = {
-    "UNIQUE": (unique_test_path, "sstubs4j"),
-    "REPETITION": (repetition_test_path, "sstubs4j"),
-    "DEFECTS4J": (defects4j_test_path, "defects4j")
+    "UNIQUE": unique_test_path,
+    "REPETITION": repetition_test_path,
+    "DEFECTS4J": defects4j_test_path
 }
 
-# ---------------------------
-# PREPROCESSING FUNCTION
-# ---------------------------
-def preprocess_test_data(file_path, dataset_type):
+# function to preprocess test data
+def preprocess_test_data(file_path, dataset_type="sstubs4j"):
     with open(file_path, "r") as f:
         test_data = json.load(f)
-
     inputs = []
     labels = []
-
     for bug in tqdm(test_data, desc=f"Processing {file_path}"):
         context_before = bug.get("contextBefore", "")
         context_after = bug.get("contextAfter", "")
@@ -72,7 +63,7 @@ def preprocess_test_data(file_path, dataset_type):
         project_name = bug.get("projectName", "")
 
         if dataset_type == "sstubs4j":
-            # Balanced buggy and non-buggy examples
+            # Buggy example (label 1)
             buggy_text = (
                 f"Context Before:\n{context_before}\n"
                 f"Fix Commit Message: {fix_commit_message}\n"
@@ -83,6 +74,7 @@ def preprocess_test_data(file_path, dataset_type):
             inputs.append(buggy_text)
             labels.append(1)
 
+            # Not Buggy example (label 0)
             not_buggy_text = (
                 f"Context After:\n{context_after}\n"
                 f"Fix Commit Message: {fix_commit_message}\n"
@@ -93,50 +85,40 @@ def preprocess_test_data(file_path, dataset_type):
             inputs.append(not_buggy_text)
             labels.append(0)
 
-        elif dataset_type == "defects4j":
-            # Defects4J only has buggy examples
+        
+        else:
             buggy_text = (
-                f"Code Diff:\n{bug.get('diff', '')}\n"
-                f"Failing Tests: {bug.get('failingTests', '')}\n"
-                f"Repair Patterns: {bug.get('repairPatterns', '')}\n"
-                f"Program: {bug.get('program', '')}"
+                f"Context Before:\n{context_before}\n"
+                f"Fix Commit Message: {fix_commit_message}\n"
+                f"Parent Commit Message: {parent_commit_msg}\n"
+                f"Bug Type: {bug_type}\n"
+                f"Project: {project_name}"
             )
             inputs.append(buggy_text)
             labels.append(1)
-
     return inputs, labels
 
-# ---------------------------
-# EVALUATION FUNCTION
-# ---------------------------
-for test_name, (test_path, dataset_type) in test_sets.items():
+# Evaluate each test set
+for test_name, test_path in test_sets.items():
+    dataset_type = "sstubs4j" if "sstubs4j" in test_path else "defects4j"
     logging.info(f"Evaluating {test_name} test set...")
-
-    # Preprocess the test data
-    inputs, labels = preprocess_test_data(test_path, dataset_type)
-    
-    # Tokenise inputs
+    inputs, labels = preprocess_test_data(test_path, dataset_type=dataset_type)
     encoded_inputs = tokenizer(inputs, truncation=True, padding=True, max_length=512, return_tensors='pt')
     encoded_inputs = {key: val.to(device) for key, val in encoded_inputs.items()}
-    
-    # Convert labels properly
-    labels = torch.tensor(np.array(labels)).to(device)
+    labels = torch.tensor(labels).to(device)
 
-    # Run inference
     with torch.no_grad():
         logits = model(**encoded_inputs).logits
         preds = torch.argmax(logits, dim=-1).cpu().numpy()
 
-    # Convert labels back to numpy
+    # Calculate metrics
     labels = labels.cpu().numpy()
-
-    # Compute metrics
     acc = accuracy_score(labels, preds)
     precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average="binary")
     report = classification_report(labels, preds, target_names=["Not Buggy", "Buggy"], labels=[0, 1], digits=4)
     cm = confusion_matrix(labels, preds, labels=[0, 1])
 
-    # Log evaluation results
+    # Log the results
     logging.info(f"{test_name} Test Set Results:")
     logging.info(f"Accuracy: {acc:.4f}")
     logging.info(f"Precision: {precision:.4f}")
@@ -145,15 +127,14 @@ for test_name, (test_path, dataset_type) in test_sets.items():
     logging.info(f"Classification Report:\n{report}")
     logging.info(f"Confusion Matrix:\n{cm}")
 
-    # Skip confusion matrix if only one class exists
-    if len(set(labels)) > 1:
-        plt.figure(figsize=(6, 4))
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["Not Buggy", "Buggy"], yticklabels=["Not Buggy", "Buggy"])
-        plt.xlabel("Predicted")
-        plt.ylabel("Actual")
-        plt.title(f"Confusion Matrix for {test_name} Test Set")
-        plt.savefig(f"{test_name}_confusion_matrix.png")
-        plt.close()
+    # Plot confusion matrix
+    plt.figure(figsize=(6, 4))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["Not Buggy", "Buggy"], yticklabels=["Not Buggy", "Buggy"])
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+    plt.title(f"Confusion Matrix for {test_name} Test Set")
+    plt.savefig(f"{test_name}_confusion_matrix.png")
+    plt.close()
 
 logging.info("Full evaluation complete.")
 

@@ -1,0 +1,60 @@
+2025-02-22 19:33:24,488 - INFO - Starting full evaluation script...
+2025-02-22 19:33:24,488 - INFO - Loading model from: ../../fine_tuned_model/final_model
+2025-02-22 19:33:25,722 - INFO - Evaluating UNIQUE test set...
+2025-02-22 19:42:32,609 - INFO - UNIQUE Test Set Results:
+2025-02-22 19:42:32,609 - INFO - Accuracy: 0.5000
+2025-02-22 19:42:32,609 - INFO - Precision: 0.5000
+2025-02-22 19:42:32,609 - INFO - Recall: 1.0000
+2025-02-22 19:42:32,609 - INFO - F1 Score: 0.6667
+2025-02-22 19:42:32,609 - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+   Not Buggy     0.0000    0.0000    0.0000      2379
+       Buggy     0.5000    1.0000    0.6667      2379
+
+    accuracy                         0.5000      4758
+   macro avg     0.2500    0.5000    0.3333      4758
+weighted avg     0.2500    0.5000    0.3333      4758
+
+2025-02-22 19:42:32,609 - INFO - Confusion Matrix:
+[[   0 2379]
+ [   0 2379]]
+2025-02-22 19:42:32,716 - INFO - Evaluating REPETITION test set...
+2025-02-22 20:06:41,475 - INFO - REPETITION Test Set Results:
+2025-02-22 20:06:41,490 - INFO - Accuracy: 0.5000
+2025-02-22 20:06:41,490 - INFO - Precision: 0.5000
+2025-02-22 20:06:41,490 - INFO - Recall: 1.0000
+2025-02-22 20:06:41,490 - INFO - F1 Score: 0.6667
+2025-02-22 20:06:41,490 - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+   Not Buggy     0.0000    0.0000    0.0000      5697
+       Buggy     0.5000    1.0000    0.6667      5697
+
+    accuracy                         0.5000     11394
+   macro avg     0.2500    0.5000    0.3333     11394
+weighted avg     0.2500    0.5000    0.3333     11394
+
+2025-02-22 20:06:41,498 - INFO - Confusion Matrix:
+[[   0 5697]
+ [   0 5697]]
+2025-02-22 20:06:42,184 - INFO - Evaluating DEFECTS4J test set...
+2025-02-22 20:06:42,982 - INFO - DEFECTS4J Test Set Results:
+2025-02-22 20:06:42,982 - INFO - Accuracy: 1.0000
+2025-02-22 20:06:42,982 - INFO - Precision: 1.0000
+2025-02-22 20:06:42,982 - INFO - Recall: 1.0000
+2025-02-22 20:06:42,982 - INFO - F1 Score: 1.0000
+2025-02-22 20:06:42,982 - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+   Not Buggy     0.0000    0.0000    0.0000         0
+       Buggy     1.0000    1.0000    1.0000        40
+
+   micro avg     1.0000    1.0000    1.0000        40
+   macro avg     0.5000    0.5000    0.5000        40
+weighted avg     1.0000    1.0000    1.0000        40
+
+2025-02-22 20:06:42,982 - INFO - Confusion Matrix:
+[[ 0  0]
+ [ 0 40]]
+2025-02-22 20:06:43,120 - INFO - Full evaluation complete.
